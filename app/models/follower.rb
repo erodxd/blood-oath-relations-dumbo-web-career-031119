@@ -1,5 +1,7 @@
 class Follower
 
+    attr_reader :name, :age, :life_motto
+    # @@TIME = Time.new
     @@ALL = []
 
     def initialize(name, age, life_motto)
@@ -10,11 +12,13 @@ class Follower
     end
 
     def cults
-
+        BloodOath.get_all_oaths_by_follower(self).map do |oath|
+            oath.cult
+        end
     end
 
-    def join_cult(cult)
-
+    def join_cult(cult_to_be_joined)
+        cult_to_be_joined.recruit_follower(self)
     end
 
     def self.all

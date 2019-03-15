@@ -1,23 +1,25 @@
 class Cult
 
+    @@TIME = Time.new
     @@ALL = []
 
-    attr_reader :name, :city, :founding_year, :slogan
+    attr_reader :name, :location, :founding_year, :slogan
 
     def initialize(name, location, founding_year, slogan)
         @name = name
         @location = location
         @founding_year = founding_year
         @slogan = slogan
+        @follower_count = 0
         @@ALL << self
     end
 
     def recruit_follower(follower)
-        followers << follower
+        BloodOath.new(@@TIME.year, @@TIME.month, @@TIME.day, follower, self)
     end
 
     def cult_population
-        
+        BloodOath.get_all_oath_by_cult(self).size
     end
 
     def self.all
@@ -30,11 +32,16 @@ class Cult
         end
     end
 
-    def self.find_by_location
-
+    
+    def self.find_by_location(cult_location)
+        @@ALL.select do |cults|
+            cults.location == cult_location
+        end
     end
 
-    def self.find_by_founding_year
-
+    def self.find_by_founding_year(year)
+        @@ALL.select do |cults|
+            cults.founding_year == year
+        end
     end
 end
